@@ -1,7 +1,5 @@
-import { defineStore } from 'pinia'
-
-export default defineStore('dashboard-time', {
-    actions: {
+export default {
+    methods:{
         formatTimestamp(timestamp) {
             const date = new Date(timestamp);
             const year = date.getFullYear();
@@ -14,4 +12,4 @@ export default defineStore('dashboard-time', {
             return `${year}/${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
     }
-})
+}

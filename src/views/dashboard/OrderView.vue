@@ -71,6 +71,7 @@ import ToastCard from '@/components/ToastCard.vue'
 import SwalModal from '@/components/SwalModal.vue'
 
 import swalConfig from '@/mixins/swal.js';
+import formatTime from '@/mixins/time.js'
 
 export default {
     components: {
@@ -79,7 +80,7 @@ export default {
         ToastCard,
         SwalModal,
     },
-    mixins: [swalConfig],
+    mixins: [swalConfig, formatTime],
     data() {
         return {
             orderNumber: '',
@@ -96,7 +97,6 @@ export default {
     methods: {
         ...mapActions(tokenStore, ['setHeaderToken']),
         ...mapActions(orderStore, ['getOrder', 'orderBtnClick', 'deleteOrder']),
-        ...mapActions(timeStore, ['formatTimestamp']),
         deleteClick(id) {
             this.isswalShow = true
             this.deltempOrderId = id

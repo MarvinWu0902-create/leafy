@@ -97,19 +97,20 @@
 import { mapState, mapActions } from 'pinia'
 import orderStore from '@/stores/dashboard/order.js'
 import modalStore from '@/stores/dashboard/modal.js'
-import timeStore from '@/stores/dashboard/time.js'
+
 
 import Modal from '@/components/dashboard/Modal.vue'
 import SwalModal from '@/components/SwalModal.vue'
 
 import swalConfig from '@/mixins/swal.js';
+import formatTime from '@/mixins/time.js'
 
 export default {
     components: {
         Modal,
         SwalModal,
     },
-    mixins: [swalConfig],
+    mixins: [swalConfig, formatTime],
     data() {
         return {
             modalOrder: {},
@@ -133,8 +134,6 @@ export default {
     methods: {
         ...mapActions(modalStore, ['closeModal']),
         ...mapActions(orderStore, ['adjustOrder']),
-        ...mapActions(timeStore, ['formatTimestamp']),
-
         deleteClick(id) {
             this.isswalShow = true
             this.delProducttempID = id
