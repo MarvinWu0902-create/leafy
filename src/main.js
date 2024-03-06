@@ -43,6 +43,11 @@ const app = createApp(App)
 
 app.config.globalProperties.$swal = Swal;
 
+router.beforeEach((to, from, next) => {
+    app.config.globalProperties.$previousRoute = from;
+    next();
+});
+
 app.component('VueLoading', Loading)
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.use(createPinia())

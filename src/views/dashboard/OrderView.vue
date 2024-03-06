@@ -63,7 +63,6 @@ import { mapState, mapActions } from 'pinia'
 
 import tokenStore from '@/stores/dashboard/token.js'
 import orderStore from '@/stores/dashboard/order.js'
-import timeStore from '@/stores/dashboard/time.js'
 
 import OrderModal from '@/components/dashboard/order/OrderModal.vue'
 import PaginationBtn from '@/components/dashboard/PaginationBtn.vue'

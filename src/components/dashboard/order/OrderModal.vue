@@ -96,7 +96,7 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import orderStore from '@/stores/dashboard/order.js'
-import modalStore from '@/stores/dashboard/modal.js'
+import modalStore from '@/stores/modal.js'
 
 
 import Modal from '@/components/dashboard/Modal.vue'

@@ -207,7 +207,7 @@
 import { mapState, mapActions } from 'pinia'
 import productStore from '@/stores/dashboard/product.js'
 import tokenStore from '@/stores/dashboard/token.js'
-import modalStore from '@/stores/dashboard/modal.js'
+import modalStore from '@/stores/modal.js'
 
 import Modal from '@/components/dashboard/Modal.vue'
 
@@ -287,3 +287,4 @@ export default {
     }
 }
 </script>
+@/stores/modal.js

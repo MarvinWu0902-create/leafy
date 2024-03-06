@@ -37,7 +37,7 @@
 
 <script>
 import { mapState, mapActions } from 'pinia'
-import modalStore from '@/stores/dashboard/modal.js'
+import modalStore from '@/stores/modal.js'
 
 export default {
     computed: {

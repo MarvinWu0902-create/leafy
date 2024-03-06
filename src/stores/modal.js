@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export default defineStore('dashboard-modal', {
+export default defineStore('modal', {
     state() {
         return {
             isModalShow: false,

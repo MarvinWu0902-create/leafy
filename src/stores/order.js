@@ -8,7 +8,6 @@ export default defineStore('order', {
             orderStatus: '',
             orderData: {},
             orderAllData: [],
-            orderToast: {},
             orderLoading: {
                 get: false,
                 post: false,
@@ -22,11 +21,11 @@ export default defineStore('order', {
             this.orderStatus = status
         },
         postOrder(user, message) {
-            this.orderLoading.post = true;
+            this.orderLoading.post = true
             apipostOrder(user, message)
                 .then((res) => {
-                    router.push(`/ordercreate/${res.data.orderId}`);
-                    this.orderToast = res.data;
+                    this.orderLoading.post = false
+                    router.push(`/ordercreate/${res.data.orderId}`)
                 })
                 .catch(() => {
                     alert('建立訂單失敗')
@@ -37,7 +36,7 @@ export default defineStore('order', {
             apigetAllOrder()
                 .then((res) => {
                     this.orderLoading.get = false
-                    const { pagination, orders } = res.data
+                    const { orders } = res.data
                     this.orderAllData = orders
                 })
                 .catch(() => {
@@ -45,10 +44,11 @@ export default defineStore('order', {
                 })
         },
         getSingleOrder(id) {
+            this.orderLoading.get=true
             apigetSingleOrder(id)
                 .then((res) => {
                     this.orderData = res.data.order;
-                    this.orderLoading.post = false;
+                    this.orderLoading.get = false;
                     if (this.orderData.is_paid) {
                         this.orderStatus = 'finish';
                     } else {
@@ -62,8 +62,7 @@ export default defineStore('order', {
         payOrder(id) {
             this.orderLoading.pay = true;
             apipayOrder(id)
-                .then((res) => {
-                    this.orderToast = res.data;
+                .then(() => {
                     return apigetSingleOrder(id)
                 })
                 .then((res) => {

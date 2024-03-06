@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { apiadmingetOrder, apiadminadjustOrder, apiadmindeleteOrder } from '@/api/dashboard/order.js'
-import modalStore from '@/stores/dashboard/modal.js'
+import modalStore from '@/stores/modal.js'
 
 export default defineStore('dashboard-order', {
     state() {

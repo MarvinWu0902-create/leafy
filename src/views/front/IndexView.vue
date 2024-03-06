@@ -26,7 +26,7 @@
 
                     <RouterLink class="w-5 h-5 cursor-pointer" to="/userinfo">
                         <span class="material-symbols-outlined text-secondary hover:text-primary">
-                            face
+                            list_alt
                         </span>
                     </RouterLink>
 

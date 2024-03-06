@@ -3,7 +3,7 @@
         <ToastCard :toast-msg="resInfo" :show-time="2000"></ToastCard>
         <ProgressBar class="mt-10 mb-16"></ProgressBar>
 
-        <div class="container mb-10" v-show="!orderLoading.post">
+        <div class="container mb-10" v-show="!cartLoading.getCart">
             <h3 class="p-4 bg-gray-400/10">購物車</h3>
 
             <div class="hidden p-4 border md:block">
@@ -59,7 +59,7 @@
                         <p class="mb-4 text-sm">已享用之優惠</p>
                         <DiscountBar class="mb-2" :color="'bg-green-400/50'" v-show="isoverFreightLimit">
                             <template #name>免運優惠</template>
-                            <template #content>滿$200免運</template>
+                            <template #content>滿${{freightLimit}}免運</template>
                         </DiscountBar>
                         <DiscountBar :color="'bg-red-400/50'" v-show="ispromotionalSales">
                             <template #name>活動優惠</template>
@@ -125,7 +125,7 @@
                         <p class="mb-4 text-sm">已享用之優惠</p>
                         <DiscountBar class="mb-2" :color="'bg-green-400/50'" v-show="isoverFreightLimit">
                             <template #name>免運優惠</template>
-                            <template #content>滿$200免運</template>
+                            <template #content>滿${{freightLimit}}免運</template>
                         </DiscountBar>
                         <DiscountBar :color="'bg-red-400/50'" v-show="ispromotionalSales">
                             <template #name>活動優惠</template>
@@ -216,7 +216,7 @@ export default {
     data() {
         return {
             freightPrice: 20,
-            freightLimit: 200
+            freightLimit: 100
         }
     },
     computed: {
