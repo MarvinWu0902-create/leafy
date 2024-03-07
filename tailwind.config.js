@@ -35,7 +35,7 @@ export default {
       },
       backgroundImage: {
         'logo': "url('/leafy_logo-removebg.png')",
-        'home-banner': "url('https://images.unsplash.com/photo-1503028150920-f958b0c2ab65?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+        'home-banner': "url('https://images.unsplash.com/photo-1487099174927-da3cd6408862?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
         'subscribe-banner': "url('https://images.unsplash.com/photo-1492778297155-7be4c83960c7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
         'content-1': "url('https://images.unsplash.com/photo-1563822249366-3efb23b8e0c9?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
         'content-2': "url('https://images.unsplash.com/photo-1586675502584-b7cb808400df?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",

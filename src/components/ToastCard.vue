@@ -39,10 +39,11 @@ export default {
             }, this.showTime);
         },
         showToast() {
-            // 如果有設置setTimeout則取消設置，並延後.5s顯示
+            // 如果有設置setTimeout則取消設置並直接消失
             if (this.timeoutId !== null) {
                 this.toastShow = false;
                 clearTimeout(this.timeoutId);
+                // 延後.5s再顯示出來
                 setTimeout(() => {
                     this.showHandler()
                 }, 500)

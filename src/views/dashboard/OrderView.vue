@@ -1,13 +1,13 @@
 <template>
     <div>
-        <VueLoading :active="orderLoading.getOrder || orderLoading.adjustOrder || orderLoading.deleteOrder"
-            :can-cancel="true" :is-full-page="true" />
         <ToastCard :toast-msg="resInfo" :show-time="2000"></ToastCard>
         <OrderModal></OrderModal>
         <SwalModal v-if="isswalShow" :title="swalConfig.title" :text="swalConfig.text" :icon="swalConfig.icon"
             :showCancelButton="swalConfig.showCancelButton" :confirmButtonText="swalConfig.confirmButtonText"
             :cancelButtonText="swalConfig.cancelButtonText" @status="swalHandler"></SwalModal>
-        <div class="container">
+        <div class="container vl-parent">
+            <VueLoading :active="orderLoading.getOrder || orderLoading.adjustOrder || orderLoading.deleteOrder"
+            :can-cancel="true" :is-full-page="false" />
             <div class="flex justify-between my-4">
                 <input type="text"
                     class="w-1/6 p-2 border rounded focus:outline-none focus:border-transparent focus:ring-2 focus:ring-primary/50"

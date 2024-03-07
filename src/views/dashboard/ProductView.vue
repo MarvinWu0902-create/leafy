@@ -1,13 +1,13 @@
 <template>
     <div>
-        <VueLoading :active="productLoading.getProduct || productLoading.adjustProduct || productLoading.deleteProduct"
-            :can-cancel="true" :is-full-page="true" />
         <ToastCard :toast-msg="resInfo" :show-time="2000"></ToastCard>
         <SwalModal v-if="isswalShow" :title="swalConfig.title" :text="swalConfig.text" :icon="swalConfig.icon"
             :showCancelButton="swalConfig.showCancelButton" :confirmButtonText="swalConfig.confirmButtonText"
             :cancelButtonText="swalConfig.cancelButtonText" @status="swalHandler"></SwalModal>
         <ProductModal></ProductModal>
-        <div class="container">
+        <div class="container vl-parent">
+            <VueLoading :active="productLoading.getProduct || productLoading.adjustProduct || productLoading.deleteProduct"
+            :can-cancel="true" :is-full-page="false" />
             <div class="flex items-end justify-between my-4">
                 <select class="w-24 p-2 border rounded cursor-pointer focus:outline-none" name="category"
                     v-model="currentCategory" required>

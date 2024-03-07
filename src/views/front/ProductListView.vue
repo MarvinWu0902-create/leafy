@@ -1,13 +1,15 @@
 <template>
-    <VueLoading :active="productLoading.getProduct" :can-cancel="true" :is-full-page="true" />
-    <div class="container">
-        <h3 class="my-10 text-2xl font-bold tracking-widest text-center text-primary">LEAFY商品列表</h3>
-        <GroupBtn class="mb-10"></GroupBtn>
-        <div class="grid grid-cols-1 gap-4 px-10 mb-10 md:grid-cols-3 md:px-0">
-            <ProductItem class="pb-4 mb-4 border " v-for="product of filterProductData" :key="product.id"
-                :product="product"></ProductItem>
+    <div>
+        <VueLoading :active="productLoading.getProduct" :can-cancel="true" :is-full-page="true" />
+        <div class="container" v-show="!productLoading.getProduct">
+            <h3 class="my-10 text-2xl font-bold tracking-widest text-center text-primary">LEAFY商品列表</h3>
+            <GroupBtn class="mb-10"></GroupBtn>
+            <div class="grid grid-cols-1 gap-4 px-10 mb-10 md:grid-cols-3 md:px-0">
+                <ProductItem class="pb-4 mb-4 border " v-for="product of filterProductData" :key="product.id"
+                    :product="product" data-aos="fade-up"></ProductItem>
+            </div>
+            <PaginationBtn class="mb-10"></PaginationBtn>
         </div>
-        <PaginationBtn class="mb-10"></PaginationBtn>
     </div>
 </template>
 
