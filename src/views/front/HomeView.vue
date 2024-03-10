@@ -80,39 +80,40 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
+import { mapState, mapActions } from 'pinia';
 
-import productStore from '@/stores/product.js'
+import productStore from '@/stores/product';
 
-import ProductSwiper from '@/components/front/ProductSwiper.vue'
+import ProductSwiper from '@/components/front/ProductSwiper.vue';
+
 export default {
-    data() {
-        return {
-            swiperProduct: [],
-        }
+  data() {
+    return {
+      swiperProduct: [],
+    };
+  },
+  components: {
+    ProductSwiper,
+  },
+  computed: {
+    ...mapState(productStore, ['productData']),
+  },
+  methods: {
+    ...mapActions(productStore, ['getProduct']),
+    swipermouseEnter() {
+      this.$refs.swiperRef.swiper.autoplay.stop();
     },
-    components: {
-        ProductSwiper
+    swipermouseLeave() {
+      this.$refs.swiperRef.swiper.autoplay.start();
     },
-    computed: {
-        ...mapState(productStore, ['productData']),
+  },
+  watch: {
+    productData(newVal) {
+      this.swiperProduct = newVal;
     },
-    methods: {
-        ...mapActions(productStore, ['getProduct']),
-        swipermouseEnter() {
-            this.$refs.swiperRef.swiper.autoplay.stop()
-        },
-        swipermouseLeave() {
-            this.$refs.swiperRef.swiper.autoplay.start()
-        }
-    },
-    watch: {
-        productData(newVal) {
-            this.swiperProduct = newVal
-        }
-    },
-    mounted() {
-        this.getProduct();
-    }
-}
+  },
+  mounted() {
+    this.getProduct();
+  },
+};
 </script>

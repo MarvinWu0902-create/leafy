@@ -57,8 +57,8 @@
                             v-show="orderLoading.pay" />
                     </button>
                     <RouterLink
-                        class="flex items-center justify-center w-full py-2 text-center text-white transition duration-300 bg-primary hover:bg-primary-darker"
-                        to="/productlist" v-else>繼續逛逛
+                        class="flex items-center justify-center w-full py-2 tracking-widest text-center text-white transition duration-300 bg-primary hover:bg-primary-darker"
+                        to="/productlist" v-else>繼續選購
                         <span class="material-symbols-outlined ms-1">
                             shopping_cart_checkout
                         </span>
@@ -70,30 +70,29 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
+import { mapState, mapActions } from 'pinia';
 
-import cartStore from '@/stores/cart.js'
-import orderStore from '@/stores/order.js'
+import cartStore from '@/stores/cart';
+import orderStore from '@/stores/order';
 
-import ProgressBar from '@/components/front/order/ProgressBar.vue'
-
+import ProgressBar from '@/components/front/order/ProgressBar.vue';
 
 export default {
-    components: {
-        ProgressBar,
-    },
-    computed: {
-        ...mapState(orderStore, ['orderData','orderLoading']),
-    },
-    methods: {
-        ...mapActions(orderStore, ['orderChange', 'getSingleOrder', 'payOrder']),
-        ...mapActions(cartStore, ['getCart']),
-    },
-    mounted() {
-        this.orderChange('')
-        this.getCart()
-        this.getSingleOrder(this.$route.params.id)
-    }
+  components: {
+    ProgressBar,
+  },
+  computed: {
+    ...mapState(orderStore, ['orderData', 'orderLoading']),
+  },
+  methods: {
+    ...mapActions(orderStore, ['orderChange', 'getSingleOrder', 'payOrder']),
+    ...mapActions(cartStore, ['getCart']),
+  },
+  mounted() {
+    this.orderChange('');
+    this.getCart();
+    this.getSingleOrder(this.$route.params.id);
+  },
 
-}
+};
 </script>

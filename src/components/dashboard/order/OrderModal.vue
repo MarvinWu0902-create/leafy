@@ -3,7 +3,7 @@
         <SwalModal v-if="isswalShow" :title="swalConfig.title" :text="swalConfig.text" :icon="swalConfig.icon"
             :showCancelButton="swalConfig.showCancelButton" :confirmButtonText="swalConfig.confirmButtonText"
             :cancelButtonText="swalConfig.cancelButtonText" @status="swalHandler"></SwalModal>
-        <Modal>
+        <ModalComponent>
             <template #header>
                 <div class="p-4 text-white">{{ headerTitle }}</div>
             </template>
@@ -11,8 +11,8 @@
                 <div class="p-2 bg-gray-400/20">
                     <p>訂單狀態 : <span
                             :class="{ 'text-green-600': modalOrder.is_paid, 'text-red-600': !modalOrder.is_paid }">{{
-                                modalOrder.is_paid
-                                ? '已付款' : '未付款' }}</span></p>
+            modalOrder.is_paid
+                ? '已付款' : '未付款' }}</span></p>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="col-span-1">
@@ -48,7 +48,7 @@
                         <div class="flex items-center justify-between py-2 mt-3 border-b-2">
                             <h3 class="font-bold">商品內容</h3>
                             <p><span class="text-sm">訂單金額 : </span><span class="text-xl font-bold text-red-400 ">{{
-                                modalOrder.total }}</span></p>
+            modalOrder.total }}</span></p>
                         </div>
 
                         <ul class="mt-4 space-y-1 ">
@@ -86,72 +86,75 @@
             <template #footer>
                 <button class="px-4 py-2 transition duration-200 border rounded hover:text-white hover:bg-gray-700 me-1"
                     type="button" @click="closeModal">關閉</button>
-                <button class="px-4 py-2 text-white transition duration-200 bg-gray-700 border rounded hover:bg-gray-800 "
+                <button
+                    class="px-4 py-2 text-white transition duration-200 bg-gray-700 border rounded hover:bg-gray-800 "
                     type="button" @click="adjustOrder(modalOrder)">更新訂單</button>
             </template>
-        </Modal>
+        </ModalComponent>
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
-import orderStore from '@/stores/dashboard/order.js'
-import modalStore from '@/stores/modal.js'
+import { mapState, mapActions } from 'pinia';
+import orderStore from '@/stores/dashboard/order';
+import modalStore from '@/stores/modal';
 
+import ModalComponent from '@/components/dashboard/ModalComponent.vue';
+import SwalModal from '@/components/SwalModal.vue';
 
-import Modal from '@/components/dashboard/Modal.vue'
-import SwalModal from '@/components/SwalModal.vue'
-
-import swalConfig from '@/mixins/swal.js';
-import formatTime from '@/mixins/time.js'
+import swalConfig from '@/mixins/swal';
+import formatTime from '@/mixins/time';
 
 export default {
-    components: {
-        Modal,
-        SwalModal,
+  components: {
+    ModalComponent,
+    SwalModal,
+  },
+  mixins: [swalConfig, formatTime],
+  data() {
+    return {
+      modalOrder: {},
+      isswalShow: false,
+      delProducttempID: '',
+    };
+  },
+  watch: {
+    tempOrder(newVal) {
+      this.modalOrder = { ...newVal };
     },
-    mixins: [swalConfig, formatTime],
-    data() {
-        return {
-            modalOrder: {},
-            isswalShow: false,
-            delProducttempID: '',
-        }
+  },
+  computed: {
+    ...mapState(modalStore, ['modalStatus']),
+    ...mapState(orderStore, ['tempOrder', 'tempProductId']),
+    headerTitle() {
+      let title = '';
+      if (this.modalStatus === 'get') {
+        title = `訂單編號 : ${this.modalOrder.id}`;
+      }
+      return title;
     },
-    watch: {
-        tempOrder(newVal) {
-            this.modalOrder = { ...newVal }
-        },
+  },
+  methods: {
+    ...mapActions(modalStore, ['closeModal']),
+    ...mapActions(orderStore, ['adjustOrder']),
+    deleteClick(id) {
+      this.isswalShow = true;
+      this.delProducttempID = id;
     },
-    computed: {
-        ...mapState(modalStore, ['modalStatus']),
-        ...mapState(orderStore, ['tempOrder', 'tempProductId']),
-        headerTitle() {
-            if (this.modalStatus === 'get')
-                return `訂單編號 : ${this.modalOrder.id}`
-        },
+    delorderProduct() {
+      delete this.modalOrder.products[this.delProducttempID];
     },
-    methods: {
-        ...mapActions(modalStore, ['closeModal']),
-        ...mapActions(orderStore, ['adjustOrder']),
-        deleteClick(id) {
-            this.isswalShow = true
-            this.delProducttempID = id
-        },
-        delorderProduct() {
-            delete this.modalOrder.products[this.delProducttempID];
-        },
-        swalHandler(status) {
-            if (status === 'confirmed') {
-                this.delorderProduct()
-                this.adjustOrder(this.modalOrder)
-            }
-            this.isswalShow = false
-            this.delProducttempID = ''
-        },
+    swalHandler(status) {
+      if (status === 'confirmed') {
+        this.delorderProduct();
+        this.adjustOrder(this.modalOrder);
+      }
+      this.isswalShow = false;
+      this.delProducttempID = '';
     },
-    mounted() {
-        this.newOrder = {}
-    }
-}
+  },
+  mounted() {
+    this.newOrder = {};
+  },
+};
 </script>

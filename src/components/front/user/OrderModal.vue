@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Modal>
+        <ModalComponent>
             <template #header>
                 <div class="p-4">
                     <h3 class="font-medium ">消費金額明細</h3>
@@ -45,50 +45,47 @@
             <template #footer>
                 <button type="button" class="w-full py-1 text-white bg-red-400" @click="closeModal">關閉</button>
             </template>
-        </Modal>
+        </ModalComponent>
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
+import { mapState, mapActions } from 'pinia';
 
-import DiscountBar from '@/components/front/order/DiscountBar.vue'
-import Modal from '@/components/front/Modal.vue'
+import DiscountBar from '@/components/front/order/DiscountBar.vue';
+import ModalComponent from '@/components/front/ModalComponent.vue';
 
-import orderStore from '@/stores/order.js'
-import modalStore from '@/stores/modal.js'
-
-
-
+import orderStore from '@/stores/order';
+import modalStore from '@/stores/modal';
 
 export default {
-    components: {
-        Modal,
-        DiscountBar
+  components: {
+    ModalComponent,
+    DiscountBar,
+  },
+  data() {
+    return {
+      freightPrice: 20,
+      freightLimit: 100,
+    };
+  },
+  watch: {
+    orderData(newVal) {
+      if (newVal) {
+        this.openModal();
+      }
     },
-    data() {
-        return {
-            freightPrice: 20,
-            freightLimit: 100
-        }
+  },
+  computed: {
+    ...mapState(orderStore, ['orderData']),
+    isoverFreightLimit() {
+      return this.orderData.total >= this.freightLimit;
     },
-    watch: {
-        orderData(newVal) {
-            if (newVal) {
-                this.openModal()
-            }
-        }
-    },
-    computed: {
-        ...mapState(orderStore, ['orderData']),
-        isoverFreightLimit() {
-            return this.orderData.total >= this.freightLimit
-        },
-    },
-    methods: {
-        ...mapActions(modalStore, ['openModal', 'closeModal'])
-    }
-}
+  },
+  methods: {
+    ...mapActions(modalStore, ['openModal', 'closeModal']),
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>@/stores/modal.js

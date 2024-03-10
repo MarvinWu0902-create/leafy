@@ -31,18 +31,18 @@
 
 <script>
 export default {
-    data() {
-        return {
-            currentPath: '/dashboard'
-        }
+  data() {
+    return {
+      currentPath: '/dashboard',
+    };
+  },
+  watch: {
+    $route(to) {
+      this.currentPath = to.path;
     },
-    watch: {
-        '$route'(to) {
-            this.currentPath = to.path;
-        }
-    },
-    mounted() {
-        this.currentPath = this.$route.path
-    }
-}
+  },
+  mounted() {
+    this.currentPath = this.$route.path;
+  },
+};
 </script>

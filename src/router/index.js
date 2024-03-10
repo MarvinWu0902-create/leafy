@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -47,8 +47,8 @@ const router = createRouter({
           path: 'userinfo',
           name: '用戶資訊',
           component: () => import('../views/front/UserInfoView.vue'),
-        }
-      ]
+        },
+      ],
     },
     {
       path: '/dashboard',
@@ -65,7 +65,7 @@ const router = createRouter({
           name: '訂單管理',
           component: () => import('../views/dashboard/OrderView.vue'),
         },
-      ]
+      ],
     },
     {
       path: '/login',
@@ -76,6 +76,6 @@ const router = createRouter({
   scrollBehavior() {
     return { top: 0 };
   },
-})
+});
 
-export default router
+export default router;

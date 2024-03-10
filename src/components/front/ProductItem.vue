@@ -37,24 +37,24 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
-import cartStore from '@/stores/cart.js'
+import { mapState, mapActions } from 'pinia';
+import cartStore from '@/stores/cart';
 
 export default {
-    props: ['product'],
-    data() {
-        return {
-            productData: [],
-        }
-    },
-    computed: {
-        ...mapState(cartStore, ['tempId', 'cartLoading'])
-    },
-    methods: {
-        ...mapActions(cartStore, ['addCart'])
-    },
-    mounted() {
-        this.productData = this.product;
-    }
-}
+  props: ['product'],
+  data() {
+    return {
+      productData: [],
+    };
+  },
+  computed: {
+    ...mapState(cartStore, ['tempId', 'cartLoading']),
+  },
+  methods: {
+    ...mapActions(cartStore, ['addCart']),
+  },
+  mounted() {
+    this.productData = this.product;
+  },
+};
 </script>

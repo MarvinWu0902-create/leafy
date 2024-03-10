@@ -21,42 +21,42 @@
 
 <script>
 export default {
-    data() {
-        return {
-            toastShow: false,
-            timeoutId: null,
-        }
+  data() {
+    return {
+      toastShow: false,
+      timeoutId: null,
+    };
+  },
+  props: ['toastMsg', 'showTime'],
+  methods: {
+    closeToast() {
+      this.toastShow = false;
     },
-    props: ['toastMsg', 'showTime'],
-    methods: {
-        closeToast() {
-            this.toastShow = false;
-        },
-        showHandler() {
-            this.toastShow = true;
-            this.timeoutId = setTimeout(() => {
-                this.toastShow = false;
-            }, this.showTime);
-        },
-        showToast() {
-            // 如果有設置setTimeout則取消設置並直接消失
-            if (this.timeoutId !== null) {
-                this.toastShow = false;
-                clearTimeout(this.timeoutId);
-                // 延後.5s再顯示出來
-                setTimeout(() => {
-                    this.showHandler()
-                }, 500)
-            } else {
-                // 直接顯示
-                this.showHandler()
-            }
-        }
+    showHandler() {
+      this.toastShow = true;
+      this.timeoutId = setTimeout(() => {
+        this.toastShow = false;
+      }, this.showTime);
     },
-    watch: {
-        toastMsg() {
-            this.showToast()
-        }
+    showToast() {
+      // 如果有設置setTimeout則取消設置並直接消失
+      if (this.timeoutId !== null) {
+        this.toastShow = false;
+        clearTimeout(this.timeoutId);
+        // 延後.5s再顯示出來
+        setTimeout(() => {
+          this.showHandler();
+        }, 500);
+      } else {
+        // 直接顯示
+        this.showHandler();
+      }
     },
-}
+  },
+  watch: {
+    toastMsg() {
+      this.showToast();
+    },
+  },
+};
 </script>

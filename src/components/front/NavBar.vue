@@ -31,26 +31,27 @@
 </template>
 
 <script>
-import { mapActions } from 'pinia'
-import cartStore from '@/stores/cart.js'
+import { mapActions } from 'pinia';
+import cartStore from '@/stores/cart';
+
 export default {
-    props: ['canExpaned', 'isOpen', 'openClick'],
-    data() {
-        return {
-            innerisOpen: false,
-            currentPath: '',
-        }
+  props: ['canExpaned', 'isOpen', 'openClick'],
+  data() {
+    return {
+      innerisOpen: false,
+      currentPath: '',
+    };
+  },
+  methods: {
+    ...mapActions(cartStore, ['cartClick']),
+  },
+  watch: {
+    isOpen() {
+      this.innerisOpen = this.isOpen;
     },
-    methods: {
-        ...mapActions(cartStore, ['cartClick']),
+    $route(to) {
+      this.currentPath = to.path;
     },
-    watch: {
-        isOpen() {
-            this.innerisOpen = this.isOpen
-        },
-        '$route'(to) {
-            this.currentPath = to.path
-        }
-    }
-}
+  },
+};
 </script>

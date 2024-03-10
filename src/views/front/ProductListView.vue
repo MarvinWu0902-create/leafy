@@ -14,28 +14,28 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
+import { mapState, mapActions } from 'pinia';
 
-import ProductItem from '@/components/front/ProductItem.vue'
-import GroupBtn from '@/components/front/productlist/GroupBtn.vue'
-import PaginationBtn from '@/components/front/productlist/PaginationBtn.vue'
+import ProductItem from '@/components/front/ProductItem.vue';
+import GroupBtn from '@/components/front/productlist/GroupBtn.vue';
+import PaginationBtn from '@/components/front/productlist/PaginationBtn.vue';
 
-import productStore from '@/stores/product.js'
+import productStore from '@/stores/product';
 
 export default {
-    components: {
-        ProductItem,
-        GroupBtn,
-        PaginationBtn,
-    },
-    computed: {
-        ...mapState(productStore, ['productData', 'filterProductData', 'productLoading']),
-    },
-    methods: {
-        ...mapActions(productStore, ['getProduct']),
-    },
-    mounted() {
-        this.getProduct();
-    }
-}
+  components: {
+    ProductItem,
+    GroupBtn,
+    PaginationBtn,
+  },
+  computed: {
+    ...mapState(productStore, ['productData', 'filterProductData', 'productLoading']),
+  },
+  methods: {
+    ...mapActions(productStore, ['getProduct']),
+  },
+  mounted() {
+    this.getProduct();
+  },
+};
 </script>

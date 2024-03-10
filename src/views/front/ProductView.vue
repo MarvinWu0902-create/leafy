@@ -69,7 +69,6 @@
             </RouterLink>
         </div>
 
-
         <!-- 注意事項-->
         <div class="my-20 bg-main">
             <div class="container flex flex-col md:flex-row">
@@ -94,71 +93,67 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
-import productStore from '@/stores/product.js'
-import cartStore from '@/stores/cart.js'
+import { mapState, mapActions } from 'pinia';
+import productStore from '@/stores/product';
+import cartStore from '@/stores/cart';
 
-
-import ProductSwiper from '@/components/front/ProductSwiper.vue'
-import BreadCrumb from '@/components/BreadCrumb.vue'
+import ProductSwiper from '@/components/front/ProductSwiper.vue';
+import BreadCrumb from '@/components/BreadCrumb.vue';
 
 export default {
-    components: {
-        ProductSwiper,
-        BreadCrumb
+  components: {
+    ProductSwiper,
+    BreadCrumb,
+  },
+  data() {
+    return {
+      productCount: 1,
+      tempMainImage: '',
+    };
+  },
+  computed: {
+    ...mapState(productStore, ['productData', 'singleData', 'productLoading']),
+    ...mapState(cartStore, ['cartLoading']),
+    relatedData() {
+      return this.productData.filter((i) => i.category === this.singleData.category && i.title !== this.singleData.title);
     },
-    data() {
-        return {
-            productCount: 1,
-            tempMainImage: '',
-        }
-    },
-    computed: {
-        ...mapState(productStore, ['productData', 'singleData', 'productLoading']),
-        ...mapState(cartStore, ['cartLoading']),
-        relatedData() {
-            return this.productData.filter((i) => i.category === this.singleData.category && i.title !== this.singleData.title)
-        },
-        arrowData() {
+    arrowData() {
+      const filterData = this.productData.filter((i) => i.category === this.singleData.category);
+      const index = filterData.findIndex((i) => i.id === this.singleData.id);
 
-            const filterData = this.productData.filter((i) => i.category === this.singleData.category);
-            const index = filterData.findIndex((i) => i.id === this.singleData.id);
-
-            if (index === -1) {
-                return []
-            }
-            if (index === 0) {
-                return [filterData.slice(-1)[0], filterData[1]]
-            } else if (index === filterData.length - 1) {
-                return [filterData[index - 1], filterData[0]]
-            } else {
-                return [filterData[index - 1], filterData[index + 1]]
-            }
-
-        }
+      if (index === -1) {
+        return [];
+      }
+      if (index === 0) {
+        return [filterData.slice(-1)[0], filterData[1]];
+      } if (index === filterData.length - 1) {
+        return [filterData[index - 1], filterData[0]];
+      }
+      return [filterData[index - 1], filterData[index + 1]];
     },
-    methods: {
-        ...mapActions(productStore, ['getProduct', 'getsingleProduct']),
-        ...mapActions(cartStore, ['addCart']),
-        handleMouseEnter(imageInfo) {
-            this.tempMainImage = imageInfo;
-        },
-        handleMouseLeave() {
-            this.tempMainImage = this.singleData.imageUrl;
-        },
+  },
+  methods: {
+    ...mapActions(productStore, ['getProduct', 'getsingleProduct']),
+    ...mapActions(cartStore, ['addCart']),
+    handleMouseEnter(imageInfo) {
+      this.tempMainImage = imageInfo;
     },
-    watch: {
-        singleData(newVal) {
-            this.tempMainImage = newVal.imageUrl
-        },
-        $route(to) {
-            this.getsingleProduct(to.params.id);
-        }
+    handleMouseLeave() {
+      this.tempMainImage = this.singleData.imageUrl;
     },
-    mounted() {
-        this.getsingleProduct(this.$route.params.id)
-    }
-}
+  },
+  watch: {
+    singleData(newVal) {
+      this.tempMainImage = newVal.imageUrl;
+    },
+    $route(to) {
+      this.getsingleProduct(to.params.id);
+    },
+  },
+  mounted() {
+    this.getsingleProduct(this.$route.params.id);
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>

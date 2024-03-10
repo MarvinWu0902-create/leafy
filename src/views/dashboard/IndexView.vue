@@ -25,59 +25,57 @@
 </template>
 
 <script>
-import { mapActions } from 'pinia'
-import { apiloginCheck, apiLogout } from '@/api/login.js'
-import tokenStore from '@/stores/dashboard/token.js'
+import { mapActions } from 'pinia';
+import { apiloginCheck, apiLogout } from '@/api/login';
+import tokenStore from '@/stores/dashboard/token';
 
-import BreadCrumb from '@/components/BreadCrumb.vue'
-import ToastCard from '@/components/ToastCard.vue'
-import NavBar from '@/components/dashboard/NavBar.vue'
+import BreadCrumb from '@/components/BreadCrumb.vue';
+import NavBar from '@/components/dashboard/NavBar.vue';
 
 export default {
-    components: {
-        BreadCrumb,
-        ToastCard,
-        NavBar
+  components: {
+    BreadCrumb,
+    NavBar,
+  },
+  data() {
+    return {
+      islogoutLoading: false,
+      isAllow: false,
+    };
+  },
+  methods: {
+    ...mapActions(tokenStore, ['setHeaderToken']),
+    isloginCheck() {
+      apiloginCheck()
+        .then((res) => {
+          if (!res.data.success) {
+            this.$router.push('/login');
+          } else {
+            this.isAllow = true;
+          }
+        })
+        .catch(() => {
+          this.$router.push('/login');
+        });
     },
-    data() {
-        return {
-            islogoutLoading: false,
-            isAllow: false,
-        }
+    loginOut() {
+      this.islogoutLoading = true;
+      apiLogout()
+        .then(() => {
+          this.islogoutLoading = false;
+          this.$router.push('/login');
+        })
+        .catch(() => {
+          alert('登出失敗');
+        });
     },
-    methods: {
-        ...mapActions(tokenStore, ['setHeaderToken']),
-        isloginCheck() {
-            apiloginCheck()
-                .then((res) => {
-                    if (!res.data.success) {
-                        this.$router.push('/login')
-                    } else {
-                        this.isAllow = true;
-                    }
-                })
-                .catch(() => {
-                    this.$router.push('/login')
-                })
-        },
-        loginOut() {
-            this.islogoutLoading = true;
-            apiLogout()
-                .then(() => {
-                    this.islogoutLoading = false;
-                    this.$router.push('/login')
-                })
-                .catch(() => {
-                    alert('登出失敗')
-                })
-        },
-    },
-    mounted() {
-        this.isAllow = false;
-        this.setHeaderToken();
-        this.isloginCheck();
-    }
-}
+  },
+  mounted() {
+    this.isAllow = false;
+    this.setHeaderToken();
+    this.isloginCheck();
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>

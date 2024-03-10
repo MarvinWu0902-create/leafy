@@ -32,40 +32,39 @@
 </template>
 
 <script>
-import { apiLogin } from '@/api/login.js'
+import { apiLogin } from '@/api/login';
 
 export default {
-    data() {
-        return {
-            userName: '',
-            passWord: '',
-            isloginLoading: false,
-            isShow: false,
-        }
+  data() {
+    return {
+      userName: '',
+      passWord: '',
+      isloginLoading: false,
+      isShow: false,
+    };
+  },
+  methods: {
+    login() {
+      this.isloginLoading = true;
+      apiLogin(this.userName, this.passWord)
+        .then((res) => {
+          const { token, expired } = res.data;
+          document.cookie = `MyToken=${token};expires=${new Date(expired)};path=/;`;
+          this.isloginLoading = false;
+          this.$router.push('/dashboard');
+        })
+        .catch(() => {
+          this.isloginLoading = false;
+          alert('帳號密碼錯誤!');
+        });
     },
-    methods: {
-        login() {
-            this.isloginLoading = true
-            apiLogin(this.userName, this.passWord)
-                .then((res) => {
-                    const { token, expired } = res.data
-                    document.cookie = `MyToken=${token};expires=${new Date(expired)};path=/;`
-                    this.isloginLoading = false
-                    this.$router.push('/dashboard')
-                })
-                .catch(() => {
-                    alert('帳號密碼錯誤!')
-                    this.isloginLoading = false
-
-                })
-        }
-    },
-    mounted() {
-        setTimeout(() => {
-            this.isShow = true;
-        }, 1000)
-    }
-}
+  },
+  mounted() {
+    setTimeout(() => {
+      this.isShow = true;
+    }, 1000);
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>

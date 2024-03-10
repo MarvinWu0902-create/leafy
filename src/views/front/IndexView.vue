@@ -74,54 +74,49 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
-import cartStore from '@/stores/cart.js'
+import { mapState, mapActions } from 'pinia';
+import cartStore from '@/stores/cart';
 
-import NavBar from '@/components/front/NavBar.vue'
-import ShopCart from '@/components/front/ShopCart.vue'
-import ScrollTop from '@/components/front/ScrollTop.vue'
-import ToastCard from '@/components/ToastCard.vue'
-import BreadCrumb from '@/components/BreadCrumb.vue'
-import { RouterLink } from 'vue-router'
-
+import NavBar from '@/components/front/NavBar.vue';
+import ShopCart from '@/components/front/ShopCart.vue';
+import ScrollTop from '@/components/front/ScrollTop.vue';
+import ToastCard from '@/components/ToastCard.vue';
+import { RouterLink } from 'vue-router';
 
 export default {
-    components: {
-        NavBar,
-        ShopCart,
-        ScrollTop,
-        ToastCard,
-        BreadCrumb,
-        RouterLink
+  components: {
+    NavBar,
+    ShopCart,
+    ScrollTop,
+    ToastCard,
+    RouterLink,
+  },
+  data() {
+    return {
+      ismeunOpen: false,
+    };
+  },
+  computed: {
+    ...mapState(cartStore, ['cartData', 'finaltotalPrice', 'totalPrice', 'cartLoading', 'iscartOpen', 'resInfo']),
+  },
+  methods: {
+    menuClick() {
+      this.ismeunOpen = !this.ismeunOpen;
     },
-    data() {
-        return {
-            ismeunOpen: false,
-        }
+    ...mapActions(cartStore, ['getCart', 'addCart', 'deleteCart', 'cartClick']),
+  },
+  watch: {
+    ismeunOpen(newval) {
+      document.body.classList.toggle('overflow-hidden', newval);
     },
-    computed: {
-        ...mapState(cartStore, ['cartData', 'finaltotalPrice', 'totalPrice', 'cartLoading', 'iscartOpen', 'resInfo']),
+    iscartOpen(newval) {
+      if (newval) {
+        this.ismeunOpen = false;
+      }
     },
-    methods: {
-        menuClick() {
-            this.ismeunOpen = !this.ismeunOpen
-        },
-        ...mapActions(cartStore, ['getCart', 'addCart', 'deleteCart', 'cartClick'])
-    },
-    watch: {
-        ismeunOpen(newval) {
-            newval
-                ? document.body.classList.add('overflow-hidden')
-                : document.body.classList.remove('overflow-hidden');
-        },
-        iscartOpen(newval) {
-            if (newval) {
-                this.ismeunOpen = false;
-            }
-        }
-    },
-    mounted() {
-        this.getCart()
-    }
-}
+  },
+  mounted() {
+    this.getCart();
+  },
+};
 </script>

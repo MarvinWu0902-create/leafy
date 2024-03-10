@@ -7,7 +7,6 @@
                     <div class="relative w-full h-full mb-1 text-center">
                         <span class="absolute z-10 text-white -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">1</span>
 
-
                         <span
                             class="before:absolute before:top-1/2 before:left-1/2 before:h-[2px] before:w-1/2 before:bg-gray-200"></span>
                         <span
@@ -55,22 +54,22 @@
 </template>
 
 <script>
-import { mapState } from 'pinia'
-import orderStore from '@/stores/order.js'
+import { mapState } from 'pinia';
+import orderStore from '@/stores/order';
 
 export default {
-    data() {
-        return {
-            isShow: false
-        }
+  data() {
+    return {
+      isShow: false,
+    };
+  },
+  computed: {
+    ...mapState(orderStore, ['orderStatus']),
+  },
+  watch: {
+    orderStatus() {
+      this.isShow = true;
     },
-    computed: {
-        ...mapState(orderStore, ['orderStatus'])
-    },
-    watch: {
-        orderStatus() {
-            this.isShow = true;
-        }
-    }
-}
+  },
+};
 </script>

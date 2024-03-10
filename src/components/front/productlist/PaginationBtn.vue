@@ -23,14 +23,15 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
-import productStore from '@/stores/product.js'
+import { mapState, mapActions } from 'pinia';
+import productStore from '@/stores/product';
+
 export default {
-    computed: {
-        ...mapState(productStore, ['paginationConfig', 'totalPages', 'productLoading'])
-    },
-    methods: {
-        ...mapActions(productStore, ['getPage'])
-    }
-}
+  computed: {
+    ...mapState(productStore, ['paginationConfig', 'totalPages', 'productLoading']),
+  },
+  methods: {
+    ...mapActions(productStore, ['getPage']),
+  },
+};
 </script>

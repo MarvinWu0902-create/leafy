@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Modal>
+        <ModalComponent>
             <template #header>
                 <div class="p-4 text-white">{{ headerTitle }}</div>
             </template>
@@ -199,92 +199,91 @@
                 <button class="px-4 py-2 text-white transition duration-200 bg-gray-700 border rounded hover:bg-gray-800 "
                     type="button" @click="modalConfirmClick(modalStatus, modalProduct)">確認</button>
             </template>
-        </Modal>
+        </ModalComponent>
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
-import productStore from '@/stores/dashboard/product.js'
-import tokenStore from '@/stores/dashboard/token.js'
-import modalStore from '@/stores/modal.js'
+import { mapState, mapActions } from 'pinia';
+import productStore from '@/stores/dashboard/product';
+import tokenStore from '@/stores/dashboard/token';
+import modalStore from '@/stores/modal';
 
-import Modal from '@/components/dashboard/Modal.vue'
+import ModalComponent from '@/components/dashboard/ModalComponent.vue';
 
 export default {
-    components: {
-        Modal,
+  components: {
+    ModalComponent,
+  },
+  data() {
+    return {
+      modalProduct: {},
+      currentimgIndex: -1,
+      ismainEditing: false,
+    };
+  },
+  watch: {
+    filterCategory(newVal) {
+      this.getProduct(newVal, 1);
     },
-    data() {
-        return {
-            modalProduct: {},
-            currentimgIndex: -1,
-            ismainEditing: false,
-        }
-    },
-    watch: {
-        filterCategory(newVal) {
-            this.getProduct(newVal, 1)
-        },
-        tempProduct(newVal) {
-            this.modalProduct = { ...newVal }
-        },
-
-    },
-    computed: {
-        ...mapState(productStore, ['tempProduct', 'resInfo', 'filterCategory', 'productLoading']),
-        ...mapState(modalStore, ['isModalShow', 'modalStatus', 'currentPage']),
-        categoryData() {
-            return [...new Set(this.allproductData.map((i) => i.category))]
-        },
-        headerTitle() {
-            if (this.modalStatus === 'adjust') {
-                return '編輯商品'
-            } else if (this.modalStatus === 'add') {
-                return '新增商品'
-            } else {
-                return '刪除商品'
-            }
-        },
-        isEnabled: {
-            get() {
-                return this.modalProduct.is_enabled === 1;
-            },
-            set(value) {
-                this.modalProduct.is_enabled = value ? 1 : 0;
-            }
-        }
-    },
-    methods: {
-        ...mapActions(productStore, ['getProduct', 'modalConfirmClick']),
-        ...mapActions(tokenStore, ['setHeaderToken']),
-        ...mapActions(modalStore, ['closeModal', 'setcurrentPage']),
-        imgClick(index) {
-            if (this.currentimgIndex === index) {
-                this.currentimgIndex = -1;
-            } else {
-                this.currentimgIndex = index;
-            }
-        },
-        urleditConfrim() {
-            this.currentimgIndex = -1;
-        },
-        mainimgClick() {
-            this.ismainEditing = !this.ismainEditing
-        },
-        removeMainImg() {
-            this.modalProduct.imageUrl = ''
-            this.ismainEditing = false
-        },
-        removeSecImg(index) {
-            this.modalProduct.imagesUrl[index] = ''
-            this.currentimgIndex = -1
-        }
+    tempProduct(newVal) {
+      this.modalProduct = { ...newVal };
     },
 
-    mounted() {
-        this.setHeaderToken();
-    }
-}
+  },
+  computed: {
+    ...mapState(productStore, ['tempProduct', 'resInfo', 'filterCategory', 'productLoading']),
+    ...mapState(modalStore, ['isModalShow', 'modalStatus', 'currentPage']),
+    categoryData() {
+      return [...new Set(this.allproductData.map((i) => i.category))];
+    },
+    headerTitle() {
+      if (this.modalStatus === 'adjust') {
+        return '編輯商品';
+      } if (this.modalStatus === 'add') {
+        return '新增商品';
+      }
+      return '刪除商品';
+    },
+    isEnabled: {
+      get() {
+        return this.modalProduct.is_enabled === 1;
+      },
+      set(value) {
+        this.modalProduct.is_enabled = value ? 1 : 0;
+      },
+    },
+  },
+  methods: {
+    ...mapActions(productStore, ['getProduct', 'modalConfirmClick']),
+    ...mapActions(tokenStore, ['setHeaderToken']),
+    ...mapActions(modalStore, ['closeModal', 'setcurrentPage']),
+    imgClick(index) {
+      if (this.currentimgIndex === index) {
+        this.currentimgIndex = -1;
+      } else {
+        this.currentimgIndex = index;
+      }
+    },
+    urleditConfrim() {
+      this.currentimgIndex = -1;
+    },
+    mainimgClick() {
+      this.ismainEditing = !this.ismainEditing;
+    },
+    removeMainImg() {
+      this.modalProduct.imageUrl = '';
+      this.ismainEditing = false;
+    },
+    removeSecImg(index) {
+      this.modalProduct.imagesUrl[index] = '';
+      this.currentimgIndex = -1;
+    },
+  },
+
+  mounted() {
+    this.setHeaderToken();
+  },
+};
 </script>
 @/stores/modal.js

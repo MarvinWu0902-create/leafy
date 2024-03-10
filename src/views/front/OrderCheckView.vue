@@ -15,6 +15,7 @@
                             <th class="py-4 font-normal ">數量</th>
                             <th class="py-4 font-normal ">小計</th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,6 +51,10 @@
                                     </span>
                                 </a>
                             </td>
+                            <td>
+                                <font-awesome-icon :icon="['fas', 'spinner']" spin-pulse class="text-gray-400"
+                                    v-show="cartLoading.adjustCart && tempId === cart.id" />
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -59,7 +64,7 @@
                         <p class="mb-4 text-sm">已享用之優惠</p>
                         <DiscountBar class="mb-2" :color="'bg-green-400/50'" v-show="isoverFreightLimit">
                             <template #name>免運優惠</template>
-                            <template #content>滿${{freightLimit}}免運</template>
+                            <template #content>滿${{ freightLimit }}免運</template>
                         </DiscountBar>
                         <DiscountBar :color="'bg-red-400/50'" v-show="ispromotionalSales">
                             <template #name>活動優惠</template>
@@ -110,9 +115,11 @@
 
                     </div>
                     <div class="flex justify-between p-4">
-
-                        <AdjustCartBtn class="w-1/2" :cart-data="cart"></AdjustCartBtn>
-
+                        <div class="flex items-center">
+                            <AdjustCartBtn class="w-2/3 me-3" :cart-data="cart"></AdjustCartBtn>
+                            <font-awesome-icon :icon="['fas', 'spinner']" spin-pulse class="text-gray-400"
+                                v-show="cartLoading.adjustCart && tempId === cart.id" />
+                        </div>
                         <p class="text-end ">NT${{ cart.total }}</p>
                     </div>
                 </div>
@@ -125,14 +132,13 @@
                         <p class="mb-4 text-sm">已享用之優惠</p>
                         <DiscountBar class="mb-2" :color="'bg-green-400/50'" v-show="isoverFreightLimit">
                             <template #name>免運優惠</template>
-                            <template #content>滿${{freightLimit}}免運</template>
+                            <template #content>滿${{ freightLimit }}免運</template>
                         </DiscountBar>
                         <DiscountBar :color="'bg-red-400/50'" v-show="ispromotionalSales">
                             <template #name>活動優惠</template>
                             <template #content>季活動促銷(折扣金額依商品不同而有差異)</template>
                         </DiscountBar>
                     </div>
-
 
                 </div>
                 <div v-else>
@@ -143,7 +149,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="container flex flex-col items-baseline mb-10 md:flex-row">
 
@@ -188,81 +193,81 @@
 
         </div>
 
-
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
+import { mapState, mapActions } from 'pinia';
 
-import ProgressBar from '@/components/front/order/ProgressBar.vue'
-import DiscountBar from '@/components/front/order/DiscountBar.vue'
-import ContactForm from '@/components/front/order/ContactForm.vue'
-import AdjustCartBtn from '@/components/front/AdjustCartBtn.vue'
-import ToastCard from '@/components/ToastCard.vue'
+import ProgressBar from '@/components/front/order/ProgressBar.vue';
+import DiscountBar from '@/components/front/order/DiscountBar.vue';
+import ContactForm from '@/components/front/order/ContactForm.vue';
+import AdjustCartBtn from '@/components/front/AdjustCartBtn.vue';
+import ToastCard from '@/components/ToastCard.vue';
 
-import cartStore from '@/stores/cart.js'
-import orderStore from '@/stores/order.js'
-import couponStore from '@/stores/coupon.js'
+import cartStore from '@/stores/cart';
+import orderStore from '@/stores/order';
+import couponStore from '@/stores/coupon';
 
 export default {
-    components: {
-        ProgressBar,
-        DiscountBar,
-        ContactForm,
-        AdjustCartBtn,
-        ToastCard,
+  components: {
+    ProgressBar,
+    DiscountBar,
+    ContactForm,
+    AdjustCartBtn,
+    ToastCard,
+  },
+  data() {
+    return {
+      freightPrice: 20,
+      freightLimit: 100,
+    };
+  },
+  computed: {
+    ...mapState(cartStore, ['cartData', 'tempId', 'iscartOpen', 'cartLoading', 'finaltotalPrice', 'totalPrice']),
+    ...mapState(orderStore, ['orderStatus', 'orderLoading']),
+    ...mapState(couponStore, ['couponCode', 'couponLoading', 'resInfo', 'iscouponApply']),
+    isDiscount() {
+      return this.cartData.filter((i) => !(i.product.origin_price === i.product.price)).length
+                || this.cartData.map((i) => i.total).reduce((a, b) => a + b, 0) >= this.freightLimit;
     },
-    data() {
-        return {
-            freightPrice: 20,
-            freightLimit: 100
+    isoverFreightLimit() {
+      return this.cartData.map((i) => i.total).reduce((a, b) => a + b, 0) >= this.freightLimit;
+    },
+    ispromotionalSales() {
+      return this.cartData.filter((i) => !(i.product.origin_price === i.product.price)).length;
+    },
+    sumPrice() {
+      let price = this.iscouponApply ? this.finaltotalPrice : this.totalPrice;
+      if (!this.isoverFreightLimit) {
+        price += this.freightPrice;
+      }
+      return price;
+    },
+  },
+  methods: {
+    ...mapActions(cartStore, ['getCart', 'deleteCart', 'cartClick']),
+    ...mapActions(orderStore, ['orderChange']),
+    ...mapActions(couponStore, ['postCoupon']),
+  },
+  watch: {
+    cartData(newVal) {
+      if (!newVal.length) {
+        if (this.iscartOpen) {
+          this.cartClick();
         }
+        this.$router.push('/productlist');
+      } else {
+        this.orderChange('check');
+      }
     },
-    computed: {
-        ...mapState(cartStore, ['cartData', 'tempId', 'iscartOpen', 'cartLoading', 'finaltotalPrice', 'totalPrice']),
-        ...mapState(orderStore, ['orderStatus','orderLoading']),
-        ...mapState(couponStore, ['couponCode', 'couponLoading', 'resInfo', 'iscouponApply']),
-        isDiscount() {
-            return this.cartData.filter((i) => !(i.product.origin_price === i.product.price)).length
-                || this.cartData.map((i) => i.total).reduce((a, b) => a + b, 0) >= this.freightLimit
-        },
-        isoverFreightLimit() {
-            return this.cartData.map((i) => i.total).reduce((a, b) => a + b, 0) >= this.freightLimit
-        },
-        ispromotionalSales() {
-            return this.cartData.filter((i) => !(i.product.origin_price === i.product.price)).length
-        },
-        sumPrice() {
-            let price = 0;
-            this.iscouponApply ? price += this.finaltotalPrice : price += this.totalPrice;
-            this.isoverFreightLimit ? price += 0 : price += this.freightPrice
-            return price
-        }
+    iscouponApply() {
+      this.getCart();
     },
-    methods: {
-        ...mapActions(cartStore, ['getCart', 'deleteCart', 'cartClick']),
-        ...mapActions(orderStore, ['orderChange']),
-        ...mapActions(couponStore, ['postCoupon']),
-    },
-    watch: {
-        cartData(newVal) {
-            if (!newVal.length) {
-                this.iscartOpen
-                    ? this.cartClick()
-                    : true;
-                this.$router.push('/productlist')
-            } else {
-                this.orderChange('check')
-            }
-        },
-        iscouponApply() {
-            this.getCart()
-        }
 
-    },
-    mounted() {
-        this.getCart()
-    }
-}
+  },
+  mounted() {
+    this.getCart();
+  },
+};
 </script>

@@ -36,25 +36,25 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
-import modalStore from '@/stores/modal.js'
+import { mapState, mapActions } from 'pinia';
+import modalStore from '@/stores/modal';
 
 export default {
-    computed: {
-        ...mapState(modalStore, ['isModalShow']),
+  computed: {
+    ...mapState(modalStore, ['isModalShow']),
+  },
+  methods: {
+    ...mapActions(modalStore, ['closeModal']),
+  },
+  watch: {
+    isModalShow(newVal) {
+      if (newVal) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        this.currentimgIndex = -1;
+        document.body.style.overflow = 'auto';
+      }
     },
-    methods: {
-        ...mapActions(modalStore, ['closeModal']),
-    },
-    watch: {
-        isModalShow(newVal) {
-            if (newVal) {
-                document.body.style.overflow = 'hidden'
-            } else {
-                this.currentimgIndex = -1
-                document.body.style.overflow = 'auto'
-            }
-        }
-    }
-}
+  },
+};
 </script>

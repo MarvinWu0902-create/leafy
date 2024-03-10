@@ -5,9 +5,9 @@
         <SwalModal v-if="isswalShow" :title="swalConfig.title" :text="swalConfig.text" :icon="swalConfig.icon"
             :showCancelButton="swalConfig.showCancelButton" :confirmButtonText="swalConfig.confirmButtonText"
             :cancelButtonText="swalConfig.cancelButtonText" @status="swalHandler"></SwalModal>
-        <div class="container vl-parent">
-            <VueLoading :active="orderLoading.getOrder || orderLoading.adjustOrder || orderLoading.deleteOrder"
-            :can-cancel="true" :is-full-page="false" />
+        <div class="container">
+          <VueLoading :active="orderLoading.getOrder || orderLoading.adjustOrder || orderLoading.deleteOrder"
+            :can-cancel="true" :is-full-page="true" />
             <div class="flex justify-between my-4">
                 <input type="text"
                     class="w-1/6 p-2 border rounded focus:outline-none focus:border-transparent focus:ring-2 focus:ring-primary/50"
@@ -59,60 +59,60 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
+import { mapState, mapActions } from 'pinia';
 
-import tokenStore from '@/stores/dashboard/token.js'
-import orderStore from '@/stores/dashboard/order.js'
+import tokenStore from '@/stores/dashboard/token';
+import orderStore from '@/stores/dashboard/order';
 
-import OrderModal from '@/components/dashboard/order/OrderModal.vue'
-import PaginationBtn from '@/components/dashboard/PaginationBtn.vue'
-import ToastCard from '@/components/ToastCard.vue'
-import SwalModal from '@/components/SwalModal.vue'
+import OrderModal from '@/components/dashboard/order/OrderModal.vue';
+import PaginationBtn from '@/components/dashboard/PaginationBtn.vue';
+import ToastCard from '@/components/ToastCard.vue';
+import SwalModal from '@/components/SwalModal.vue';
 
-import swalConfig from '@/mixins/swal.js';
-import formatTime from '@/mixins/time.js'
+import swalConfig from '@/mixins/swal';
+import formatTime from '@/mixins/time';
 
 export default {
-    components: {
-        OrderModal,
-        PaginationBtn,
-        ToastCard,
-        SwalModal,
+  components: {
+    OrderModal,
+    PaginationBtn,
+    ToastCard,
+    SwalModal,
+  },
+  mixins: [swalConfig, formatTime],
+  data() {
+    return {
+      orderNumber: '',
+      isswalShow: '',
+      deltempOrderId: '',
+    };
+  },
+  computed: {
+    ...mapState(orderStore, ['orderData', 'paginationData', 'orderLoading', 'resInfo']),
+    filterOrderData() {
+      return this.orderData.filter((i) => (this.orderNumber === '' ? true : i.id.includes(this.orderNumber)));
     },
-    mixins: [swalConfig, formatTime],
-    data() {
-        return {
-            orderNumber: '',
-            isswalShow: '',
-            deltempOrderId: '',
-        }
+  },
+  methods: {
+    ...mapActions(tokenStore, ['setHeaderToken']),
+    ...mapActions(orderStore, ['getOrder', 'orderBtnClick', 'deleteOrder']),
+    deleteClick(id) {
+      this.isswalShow = true;
+      this.deltempOrderId = id;
     },
-    computed: {
-        ...mapState(orderStore, ['orderData', 'paginationData', 'orderLoading', 'resInfo']),
-        filterOrderData() {
-            return this.orderData.filter((i) => this.orderNumber === '' ? true : i.id.includes(this.orderNumber))
-        }
+    swalHandler(status) {
+      if (status === 'confirmed') {
+        this.deleteOrder(this.deltempOrderId);
+      }
+      this.isswalShow = false;
+      this.delProducttempID = '';
     },
-    methods: {
-        ...mapActions(tokenStore, ['setHeaderToken']),
-        ...mapActions(orderStore, ['getOrder', 'orderBtnClick', 'deleteOrder']),
-        deleteClick(id) {
-            this.isswalShow = true
-            this.deltempOrderId = id
-        },
-        swalHandler(status) {
-            if (status === 'confirmed') {
-                this.deleteOrder(this.deltempOrderId)
-            }
-            this.isswalShow = false
-            this.delProducttempID = ''
-        }
-    },
-    mounted() {
-        this.setHeaderToken()
-        this.getOrder(1)
-    }
-}
+  },
+  mounted() {
+    this.setHeaderToken();
+    this.getOrder(1);
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>

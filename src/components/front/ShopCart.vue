@@ -1,8 +1,9 @@
 <template>
     <div>
-        <Transition name="fade" enter-active-class="transition duration-300" leave-active-class="transition duration-300"
-            enter-from-class="opacity-0 translate-x-[100px]" enter-to-class="translate-x-0 opacity-100"
-            leave-from-class="translate-x-0 opacity-100" leave-to-class="opacity-0 translate-x-[100px]">
+        <Transition name="fade" enter-active-class="transition duration-300"
+            leave-active-class="transition duration-300" enter-from-class="opacity-0 translate-x-[100px]"
+            enter-to-class="translate-x-0 opacity-100" leave-from-class="translate-x-0 opacity-100"
+            leave-to-class="opacity-0 translate-x-[100px]">
 
             <div class="fixed overflow-y-auto top-0 right-0 w-full md:w-1/2 lg:w-[400px] h-screen bg-dark z-20"
                 v-if="iscartOpen">
@@ -14,30 +15,31 @@
                     </button>
                 </div>
 
-                <div class="flex items-center justify-between p-4 cart-item"
-                    :class="{ 'border-x-0 border-t-0 border-b-2 border-primary': index === cartData.length - 1 }"
-                    v-for="(cart, index) of cartData" :key="cart.id" v-if="cartData.length > 0">
-                    <!-- 商品照片、細項 -->
-                    <div class="flex">
-                        <img class="object-cover h-24 w-28" :src="cart.product.imageUrl" alt="商品照片">
-                        <div class="flex flex-col justify-center p-2 item-info">
-                            <h3 class="text-white text-5">{{ cart.product.title }}</h3>
-                            <p class="text-white text-5">${{ cart.final_total }} NTD</p>
+                <div v-if="cartData.length > 0">
+                    <div class="flex items-center justify-between p-4 cart-item"
+                        :class="{ 'border-x-0 border-t-0 border-b-2 border-primary': index === cartData.length - 1 }"
+                        v-for="(cart, index) of cartData" :key="cart.id">
+                        <!-- 商品照片、細項 -->
+                        <div class="flex">
+                            <img class="object-cover h-24 w-28" :src="cart.product.imageUrl" alt="商品照片">
+                            <div class="flex flex-col justify-center p-2 item-info">
+                                <h3 class="text-white text-5">{{ cart.product.title }}</h3>
+                                <p class="text-white text-5">${{ cart.final_total }} NTD</p>
+                            </div>
                         </div>
+
+                        <font-awesome-icon :icon="['fas', 'spinner']" spin-pulse class="text-white"
+                            v-show="(cartLoading.adjustCart || cartLoading.delCart) && tempId === cart.id" />
+                        <AdjustCartBtn class="w-1/3" :cart-data="cart">
+                            <button type="button"
+                                class="flex items-center justify-center px-1 cursor-pointer text-gray-200/20 hover:text-gray-400 ms-1"
+                                @click="deleteCart('single', cart.id)">
+                                <span class="material-symbols-outlined">
+                                    delete
+                                </span>
+                            </button>
+                        </AdjustCartBtn>
                     </div>
-
-
-                    <font-awesome-icon :icon="['fas', 'spinner']" spin-pulse class="text-white"
-                        v-show="(cartLoading.adjustCart || cartLoading.delCart) && tempId === cart.id" />
-                    <AdjustCartBtn class="w-1/3" :cart-data="cart">
-                        <button type="button"
-                            class="flex items-center justify-center px-1 cursor-pointer text-gray-200/20 hover:text-gray-400 ms-1"
-                            @click="deleteCart('single', cart.id)">
-                            <span class="material-symbols-outlined">
-                                delete
-                            </span>
-                        </button>
-                    </AdjustCartBtn>
                 </div>
 
                 <div class="flex flex-col items-center justify-center" v-else>
@@ -70,45 +72,43 @@
                         @click="cartClick">前往挑選商品</RouterLink>
                 </div>
 
-
             </div>
-
 
         </Transition>
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
-import cartStore from '@/stores/cart.js'
+import { mapState, mapActions } from 'pinia';
+import cartStore from '@/stores/cart';
 
-import AdjustCartBtn from '@/components/front/AdjustCartBtn.vue'
+import AdjustCartBtn from '@/components/front/AdjustCartBtn.vue';
 
 export default {
-    components: {
-        AdjustCartBtn
-    },
-    computed: {
-        ...mapState(cartStore, ['cartData', 'tempId', 'finaltotalPrice', 'totalPrice', 'iscartOpen', 'cartLoading'])
-    },
-    methods: {
-        ...mapActions(cartStore, ['deleteCart', 'adjustCart', 'cartClick']),
-        adjustCartHandler(type, cart) {
+  components: {
+    AdjustCartBtn,
+  },
+  computed: {
+    ...mapState(cartStore, ['cartData', 'tempId', 'finaltotalPrice', 'totalPrice', 'iscartOpen', 'cartLoading']),
+  },
+  methods: {
+    ...mapActions(cartStore, ['deleteCart', 'adjustCart', 'cartClick']),
+    adjustCartHandler(type, cart) {
+      const updatedCart = { ...cart };
 
-            if (type === 'plus') {
-                cart.qty++
-            } else if (type === 'minus') {
-                cart.qty--
-            }
-            this.adjustCart(cart);
-        }
+      if (type === 'plus') {
+        updatedCart.qty += 1;
+      } else if (type === 'minus') {
+        updatedCart.qty -= 1;
+      }
+
+      this.adjustCart(updatedCart);
     },
-    watch: {
-        iscartOpen(newval) {
-            newval
-                ? document.body.classList.add('overflow-hidden')
-                : document.body.classList.remove('overflow-hidden')
-        }
-    }
-}
+  },
+  watch: {
+    iscartOpen(newval) {
+      document.body.classList.toggle('overflow-hidden', newval);
+    },
+  },
+};
 </script>

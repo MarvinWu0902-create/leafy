@@ -17,39 +17,39 @@
 </template>
 
 <script>
-import ProductItem from '@/components/front/ProductItem.vue'
+import ProductItem from '@/components/front/ProductItem.vue';
 
 export default {
-    props: ['swiperData'],
-    components: {
-        ProductItem
+  props: ['swiperData'],
+  components: {
+    ProductItem,
+  },
+  data() {
+    return {
+      swiperRef: null,
+      slideView: 1,
+      autoplayConfig: {
+        delay: 2500,
+        disableOnInteraction: true,
+      },
+      breakpointsConfig: {
+        768: { slidesPerView: 3, spaceBetween: 24 },
+      },
+      loopMode: true,
+    };
+  },
+  methods: {
+    swipermouseEnter() {
+      this.$refs.swiperRef.swiper.autoplay.stop();
     },
-    data() {
-        return {
-            swiperRef: null,
-            slideView: 1,
-            autoplayConfig: {
-                delay: 2500,
-                disableOnInteraction: true
-            },
-            breakpointsConfig: {
-                768: { slidesPerView: 3, spaceBetween: 24 }
-            },
-            loopMode: true
-        }
+    swipermouseLeave() {
+      this.$refs.swiperRef.swiper.autoplay.start();
     },
-    methods: {
-        swipermouseEnter() {
-            this.$refs.swiperRef.swiper.autoplay.stop()
-        },
-        swipermouseLeave() {
-            this.$refs.swiperRef.swiper.autoplay.start()
-        }
+  },
+  watch: {
+    swiperData() {
+      this.$refs.swiperRef.swiper.update();
     },
-    watch: {
-        swiperData() {
-            this.$refs.swiperRef.swiper.update()
-        }
-    }
-}
+  },
+};
 </script>

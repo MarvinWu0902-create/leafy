@@ -25,12 +25,15 @@
                     </div>
 
                     <div class="flex flex-col p-4 text-sm border md:flex-row md:text-base">
-                        <p class="flex-1 text-gray-500">訂單日期 : {{ formatTimestamp(order.create_at * 1000) }}</p>
+                        <p class="flex-1 text-gray-500">訂單日期 :
+                            {{ formatTimestamp(order.create_at * 1000) }}
+                        </p>
                         <p class="flex-1 text-gray-500">總消費金額 : {{ order.total }}</p>
                     </div>
 
                     <div class="flex flex-col p-4 text-sm border md:flex-row md:text-base">
-                        <p class="flex-1 text-gray-500">運送狀態 : {{ order.is_paid ? '黑貓宅配-常溫(台灣含離島)' : '-' }} </p>
+                        <p class="flex-1 text-gray-500">運送狀態 :
+                            {{ order.is_paid ? '黑貓宅配-常溫(台灣含離島)' : '-' }} </p>
                         <p class="flex-1 text-gray-500" v-if="order.is_paid">訂單狀態 : 訂單處理中</p>
                         <div class="flex items-center justify-between flex-1" v-else>
                             <p class="text-gray-500 me-3">訂單狀態 : 訂單建立中</p>
@@ -50,29 +53,29 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
-import orderStore from '@/stores/order.js'
+import { mapState, mapActions } from 'pinia';
+import orderStore from '@/stores/order';
 
-import formatTime from '@/mixins/time.js'
+import formatTime from '@/mixins/time';
 
-import OrderModal from '@/components/front/user/OrderModal.vue'
+import OrderModal from '@/components/front/user/OrderModal.vue';
 
 export default {
-    components: {
-        OrderModal,
-    },
-    mixins: [formatTime],
-    computed: {
-        ...mapState(orderStore, ['orderAllData', 'orderLoading']),
-    },
-    methods: {
-        ...mapActions(orderStore, ['getAllOrder', 'getSingleOrder']),
-    },
-    mounted() {
-        this.getAllOrder()
-    }
+  components: {
+    OrderModal,
+  },
+  mixins: [formatTime],
+  computed: {
+    ...mapState(orderStore, ['orderAllData', 'orderLoading']),
+  },
+  methods: {
+    ...mapActions(orderStore, ['getAllOrder', 'getSingleOrder']),
+  },
+  mounted() {
+    this.getAllOrder();
+  },
 
-}
+};
 </script>
 
 <style lang="scss" scoped></style>

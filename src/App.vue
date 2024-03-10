@@ -14,6 +14,6 @@ export default {
       easing: 'ease-in-sine',
       once: true,
     });
-  }
-}
+  },
+};
 </script>

@@ -23,31 +23,30 @@
 </template>
 
 <script>
-import { mapActions } from 'pinia'
-import productStore from '@/stores/dashboard/product.js'
-import orderStore from '@/stores/dashboard/order.js'
+import { mapActions } from 'pinia';
+import productStore from '@/stores/dashboard/product';
+import orderStore from '@/stores/dashboard/order';
 
 export default {
-    props: ['paginationData', 'categoryData'],
-    computed: {
-        isMode() {
-            if (this.categoryData) {
-                return 'product'
-            } else {
-                return 'order'
-            }
-        }
+  props: ['paginationData', 'categoryData'],
+  computed: {
+    isMode() {
+      if (this.categoryData) {
+        return 'product';
+      }
+      return 'order';
     },
-    methods: {
-        ...mapActions(productStore, ['getProduct']),
-        ...mapActions(orderStore, ['getOrder']),
-        paginationClick(page) {
-            if (this.isMode === 'product') {
-                this.getProduct(this.categoryData, page)
-            } else if (this.isMode === 'order') {
-                this.getOrder(page)
-            }
-        }
-    }
-}
+  },
+  methods: {
+    ...mapActions(productStore, ['getProduct']),
+    ...mapActions(orderStore, ['getOrder']),
+    paginationClick(page) {
+      if (this.isMode === 'product') {
+        this.getProduct(this.categoryData, page);
+      } else if (this.isMode === 'order') {
+        this.getOrder(page);
+      }
+    },
+  },
+};
 </script>
