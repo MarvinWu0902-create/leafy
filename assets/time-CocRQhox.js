@@ -1,0 +1,1 @@
+const S={methods:{formatTimestamp(o){const t=new Date(o),e=t.getFullYear(),n=t.getMonth()+1,a=t.getDate(),r=t.getHours(),s=t.getMinutes(),g=t.getSeconds();return`${e}/${n.toString().padStart(2,"0")}/${a.toString().padStart(2,"0")} ${r.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}:${g.toString().padStart(2,"0")}`}}};export{S as f};
