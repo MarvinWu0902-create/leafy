@@ -4,7 +4,7 @@
         <div class="bg-home-banner bg-center bg-cover bg-fixed w-full h-[300px] relative">
             <div
                 class="flex flex-row items-start justify-between h-full p-4 md:items-end md:flex-col md:justify-center">
-                <h3 class="text-base tracking-widest underline text-primary md:mb-10 md:text-white/80 md:text-3xl" data-aos="fade-right">
+                <h3 class="text-base tracking-widest text-primary md:mb-10 md:text-white/80 md:text-3xl" data-aos="fade-right">
                     LEAFY一下，心情從此不一樣
                 </h3>
                 <RouterLink
