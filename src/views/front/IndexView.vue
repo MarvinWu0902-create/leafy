@@ -63,9 +63,9 @@
             <div class="container text-center text-secondary">
                 <h3 class="pt-4 pb-2 text-xl ">LEAFY</h3>
                 <div class="flex justify-center pb-2 text-xs">
-                    <p> 本網站僅供個人作品使用，不提供商業用途 | <span>
-                            <RouterLink to="/dashboard">登入後台</RouterLink>
-                        </span></p>
+                    <p> 本網站僅供個人作品使用，不提供商業用途</p>
+                    <span class="hidden mx-1 md:block"> | </span>
+                    <RouterLink class="hidden md:block" to="/dashboard">登入後台</RouterLink>
                 </div>
                 <p class="pb-4 text-xs ">LEAFY © 2024 copyright</p>
             </div>
