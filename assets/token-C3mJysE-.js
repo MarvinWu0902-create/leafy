@@ -1,1 +1,0 @@
-import{l as s}from"./index-BApqB6x0.js";import{a as n}from"./axios-Bo0ATomq.js";const r=s("token",{actions:{setHeaderToken(){var o;const t=(o=document.cookie.split("; ").find(e=>e.startsWith("MyToken=")))==null?void 0:o.split("=")[1];n.defaults.headers.common.Authorization=t}}});export{r as t};
