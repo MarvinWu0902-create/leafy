@@ -1,1 +1,0 @@
-import{l as e}from"./index-DciNioPc.js";const o=e("modal",{state(){return{isModalShow:!1,modalStatus:"",currentPage:"info"}},actions:{openModal(){this.isModalShow=!0},closeModal(){this.isModalShow=!1},setmodalStatus(t){this.modalStatus=t},setcurrentPage(t){this.currentPage=t},currentpageReset(){this.currentPage="info"}}});export{o as m};
