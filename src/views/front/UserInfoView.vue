@@ -6,18 +6,23 @@
             <div class="p-4 my-10 border">
                 <div class="px-4 py-2" v-for="(order, key) of orderAllData" :key="key">
 
-                    <div class="flex justify-between py-2 text-sm text-center border md:p-4 md:text-start md:text-base">
+                    <div
+                        class="flex justify-between p-4 text-sm text-center border md:text-start md:text-base">
 
-                        <p class="font-medium text-red-500">
+                        <p class="hidden font-medium text-red-500 md:block">
                             <span class="material-symbols-outlined">
                                 order_approve
                             </span>
                             訂單編號 : {{ order.id }}
                         </p>
+                        <p class="block font-medium text-red-500 md:hidden">
+                            {{ order.id }}
+                        </p>
+
                         <button
-                            class="flex items-center px-2 text-sm text-white border rounded bg-red-400/80 hover:bg-red-400"
+                            class="flex items-center px-2 text-gray-400/80 md:text-sm md:text-white md:border md:rounded me-0 md:me-1 md:bg-red-400/80 md:hover:bg-red-400"
                             type="button" @click="getSingleOrder(order.id)">
-                            <p class="tracking-wide me-1">消費明細</p>
+                            <p class="hidden tracking-wide md:block">消費明細</p>
                             <span class="text-sm material-symbols-outlined">
                                 open_in_new
                             </span>
@@ -32,7 +37,7 @@
                     </div>
 
                     <div class="flex flex-col p-4 text-sm border md:flex-row md:text-base">
-                        <p class="flex-1 text-gray-500">運送狀態 :
+                        <p class="flex-1 hidden text-gray-500 md:block">運送狀態 :
                             {{ order.is_paid ? '黑貓宅配-常溫(台灣含離島)' : '-' }} </p>
                         <p class="flex-1 text-gray-500" v-if="order.is_paid">訂單狀態 : 訂單處理中</p>
                         <div class="flex items-center justify-between flex-1" v-else>
@@ -42,7 +47,7 @@
                                 <span class="text-base material-symbols-outlined ">
                                     arrow_outward
                                 </span>
-                                前往付款
+                                付款
                             </RouterLink>
                         </div>
                     </div>

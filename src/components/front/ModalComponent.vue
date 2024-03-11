@@ -12,7 +12,7 @@
             enter-to-class="translate-y-0 opacity-100" leave-from-class="translate-y-0 opacity-100"
             leave-to-class="opacity-0 translate-y-[100px]">
             <div class="fixed inset-0 z-20 flex items-center justify-center" v-if="isModalShow">
-                <div class="flex flex-col justify-between w-1/4 p-4 overflow-x-auto bg-white rounded-lg shadow-lg h-2/3">
+                <div class="flex flex-col justify-between p-4 mx-3 overflow-x-auto bg-white rounded-lg shadow-lg w-80 h-2/3">
                     <div>
                         <header class="flex justify-between border-b">
                             <slot name="header"></slot>
@@ -29,7 +29,7 @@
                             <slot name="section"></slot>
                         </section>
                     </div>
-                    <footer class="flex justify-end p-4">
+                    <footer class="flex justify-end p-1 md:p-4">
                         <slot name="footer"></slot>
                     </footer>
                 </div>

@@ -2,41 +2,39 @@
     <div>
         <ModalComponent>
             <template #header>
-                <div class="p-4">
+                <div class="p-1 md:p-4">
                     <h3 class="font-medium ">消費金額明細</h3>
                 </div>
             </template>
 
             <template #section>
                 <!-- 優惠 -->
-                <div class="p-4 border-b">
+                <div class="p-1 border-b md:p-4">
                     <h3 class="mb-1">已享用之優惠</h3>
                     <DiscountBar class="mb-2" :color="'bg-green-400/50'" v-show="isoverFreightLimit">
                         <template #name>免運優惠</template>
-
                         <template #content>滿${{ freightLimit }}免運</template>
                     </DiscountBar>
                     <DiscountBar :color="'bg-red-400/50'">
-
                         <template #name>活動優惠</template>
                         <template #content>季活動促銷</template>
                     </DiscountBar>
                 </div>
                 <!-- 小計/運費 -->
-                <div class="p-4 border-b">
+                <div class="p-1 border-b md:p-4">
                     <div class="flex justify-between">
-                        <p class="mb-4">小計:</p>
+                        <p class="mb-1 md:mb-4">小計:</p>
                         <p>NT${{ orderData.total }}</p>
                     </div>
                     <div class="flex justify-between">
-                        <p class="mb-4">運費:</p>
+                        <p class="mb-1 md:mb-4">運費:</p>
                         <p>{{ isoverFreightLimit ? '免運' : freightPrice }}</p>
                     </div>
                 </div>
                 <!-- 合計 -->
-                <div class="p-4">
+                <div class="p-1 md:p-4">
                     <div class="flex justify-between">
-                        <p class="mb-4">合計:</p>
+                        <p class="mb-1 md:mb-4">合計:</p>
                         <p>NT${{ orderData.total }}</p>
                     </div>
                 </div>

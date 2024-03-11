@@ -5,7 +5,7 @@
             enter-to-class="translate-x-0 opacity-100" leave-from-class="translate-x-0 opacity-100"
             leave-to-class="opacity-0 translate-x-[100px]">
 
-            <div class="fixed overflow-y-auto top-0 right-0 w-full md:w-1/2 lg:w-[400px] h-screen bg-dark z-20"
+            <div class="fixed overflow-y-auto top-0 right-0 w-full md:w-1/2 lg:w-[400px] h-screen bg-dark z-30"
                 v-if="iscartOpen">
 
                 <div class="flex justify-between p-4 border border-t-0 border-b-2 border-x-0 border-primary">
@@ -20,17 +20,27 @@
                         :class="{ 'border-x-0 border-t-0 border-b-2 border-primary': index === cartData.length - 1 }"
                         v-for="(cart, index) of cartData" :key="cart.id">
                         <!-- 商品照片、細項 -->
-                        <div class="flex">
-                            <img class="object-cover h-24 w-28" :src="cart.product.imageUrl" alt="商品照片">
-                            <div class="flex flex-col justify-center p-2 item-info">
-                                <h3 class="text-white text-5">{{ cart.product.title }}</h3>
-                                <p class="text-white text-5">${{ cart.final_total }} NTD</p>
+                        <div class="flex justify-between w-full md:w-auto md:justify-start">
+                            <div class="flex-shrink-0 h-24 w-28">
+                                <img class="object-cover w-full h-full" :src="cart.product.imageUrl" alt="商品照片">
                             </div>
+                            <div class="flex flex-col justify-between mx-2 md:justify-center item-info">
+                                <h3 class="text-center text-white md:text-base text-5">{{ cart.product.title }}</h3>
+                                <p class="text-center text-white md:text-base text-5">${{ cart.final_total }} NTD</p>
+                                <AdjustCartBtn class="block md:hidden" :cart-data="cart"></AdjustCartBtn>
+                            </div>
+                            <button type="button"
+                                class="flex items-center justify-center px-1 cursor-pointer md:hidden text-gray-200/20 hover:text-gray-400 ms-1"
+                                @click="deleteCart('single', cart.id)">
+                                <span class="material-symbols-outlined">
+                                    delete
+                                </span>
+                            </button>
                         </div>
 
                         <font-awesome-icon :icon="['fas', 'spinner']" spin-pulse class="text-white"
                             v-show="(cartLoading.adjustCart || cartLoading.delCart) && tempId === cart.id" />
-                        <AdjustCartBtn class="w-1/3" :cart-data="cart">
+                        <AdjustCartBtn class="hidden w-1/3 md:block" :cart-data="cart">
                             <button type="button"
                                 class="flex items-center justify-center px-1 cursor-pointer text-gray-200/20 hover:text-gray-400 ms-1"
                                 @click="deleteCart('single', cart.id)">
@@ -55,11 +65,11 @@
                         <p>總計金額：$ {{ finaltotalPrice }} NTD</p>
                     </div>
                     <RouterLink to="/ordercheck" @click="cartClick"
-                        class="block p-4 mx-4 mb-4 text-center transition duration-300 bg-white cursor-pointer hover:bg-primary text-primary hover:text-white">
+                        class="block p-2 mx-4 mb-4 text-center transition duration-300 bg-white cursor-pointer md:p-4 hover:bg-primary text-primary hover:text-white">
                         確認結帳</RouterLink>
 
                     <button type="button"
-                        class="block w-24 py-2 mx-auto mb-4 text-sm text-center text-gray-400 transition duration-300 bg-transparent border border-gray-400 hover:bg-gray-400 hover:text-dark"
+                        class="block w-24 py-2 mx-auto mb-6 text-sm text-center text-gray-400 transition duration-300 bg-transparent border border-gray-400 md:mb-4 hover:bg-gray-400 hover:text-dark"
                         @click="deleteCart('all')" :disabled="cartLoading.delCart && tempId === ''">
                         清空購物車
                         <font-awesome-icon :icon="['fas', 'spinner']" spin-pulse class="text-white"
@@ -68,7 +78,7 @@
 
                 <div v-else>
                     <RouterLink to="/productlist"
-                        class="block w-1/3 p-2 mx-auto mb-4 text-center transition duration-300 rounded cursor-pointer bg-white/90 hover:bg-primary text-primary hover:text-white"
+                        class="block w-1/2 p-2 mx-auto mb-4 text-center transition duration-300 rounded cursor-pointer md:w-1/3 bg-white/90 hover:bg-primary text-primary hover:text-white"
                         @click="cartClick">前往挑選商品</RouterLink>
                 </div>
 
