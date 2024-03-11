@@ -4,7 +4,7 @@
             enter-from-class="translate-x-3 opacity-0" enter-to-class="translate-x-0 opacity-100"
             leave-from-class="translate-x-0 opacity-100" leave-to-class="translate-x-3 opacity-0">
 
-            <div class="fixed rounded-sm top-[10%] right-[10%]  bg-red-300 px-4 py-2 z-30"
+            <div class="fixed rounded-sm top-[10%] right-[10%]  bg-red-300 px-4 py-2 z-50"
                 v-if="toastShow">
                 <div class="flex items-center justify-between">
                     <p class="text-white me-3">{{ toastMsg.message }}</p>
